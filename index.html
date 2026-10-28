@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Leo Duke's Real Voice Game</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: manipulation;
+    }
+    body {
+      margin: 0;
+      padding: 15px;
+      background: linear-gradient(135deg, #FF9a9e 0%, #fecfef 100%);
+      font-family: 'Comic Sans MS', 'Chalkboard SE', 'Arial Rounded MT Bold', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow-x: hidden;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    h1 {
+      color: #333;
+      font-size: 2.2rem;
+      margin: 0;
+      text-shadow: 2px 2px 0px #FFF;
+    }
+    p {
+      color: #444;
+      font-size: 1.2rem;
+      margin: 8px 0 0 0;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      width: 100%;
+      max-width: 500px;
+      margin-bottom: 20px;
+    }
+    @media(min-width: 600px) {
+      .grid {
+        grid-template-columns: repeat(3, 1fr);
+        max-width: 650px;
+      }
+    }
+    .card {
+      background: white;
+      border-radius: 25px;
+      padding: 25px 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+      cursor: pointer;
+      transition: transform 0.1s ease, box-shadow 0.1s ease;
+      border: 5px solid #FFF;
+    }
+    .card:active {
+      transform: scale(0.90);
+      box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+    }
+    .icon {
+      font-size: 5rem;
+      line-height: 1;
+      margin-bottom: 12px;
+    }
+    .label {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #444;
+    }
+    .sound-text {
+      font-size: 1.1rem;
+      color: #E91E63;
+      font-weight: bold;
+      margin-top: 5px;
+    }
+
+    /* Card Themes */
+    .card:nth-child(1) { background: #FFEBEE; border-color: #FFCDD2; }
+    .card:nth-child(2) { background: #E3F2FD; border-color: #BBDEFB; }
+    .card:nth-child(3) { background: #E8F5E9; border-color: #C8E6C9; }
+    .card:nth-child(4) { background: #FFF3E0; border-color: #FFE0B2; }
+    .card:nth-child(5) { background: #F3E5F5; border-color: #E1BEE7; }
+    .card:nth-child(6) { background: #FFFDE7; border-color: #FFF9C4; }
+
+    @keyframes bounce {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.2) rotate(4deg); }
+    }
+    .animating {
+      animation: bounce 0.35s ease;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>🐶 Leo Duke's Voice Game 🚗</h1>
+    <p>Tap para marinig ang totoong boses!</p>
+  </header>
+
+  <div class="grid">
+    <!-- Pwede mong palitan ang 'dog.mp3' ng sarili mong audio file na in-record mo -->
+    <div class="card" onclick="playRealVoice('dog.mp3', this)">
+      <div class="icon">🐶</div>
+      <div class="label">Dog</div>
+      <div class="sound-text">"Aw-aw!"</div>
+    </div>
+
+    <div class="card" onclick="playRealVoice('cat.mp3', this)">
+      <div class="icon">🐱</div>
+      <div class="label">Cat</div>
+      <div class="sound-text">"Meow!"</div>
+    </div>
+
+    <div class="card" onclick="playRealVoice('cow.mp3', this)">
+      <div class="icon">🐮</div>
+      <div class="label">Cow</div>
+      <div class="sound-text">"Moo!"</div>
+    </div>
+
+    <div class="card" onclick="playRealVoice('car.mp3', this)">
+      <div class="icon">🚗</div>
+      <div class="label">Car</div>
+      <div class="sound-text">"Vroom!"</div>
+    </div>
+
+    <div class="card" onclick="playRealVoice('duck.mp3', this)">
+      <div class="icon">🦆</div>
+      <div class="label">Duck</div>
+      <div class="sound-text">"Quack!"</div>
+    </div>
+
+    <div class="card" onclick="playRealVoice('train.mp3', this)">
+      <div class="icon">🚂</div>
+      <div class="label">Train</div>
+      <div class="sound-text">"Choo-choo!"</div>
+    </div>
+  </div>
+
+  <script>
+    let activeAudio = null;
+
+    function playRealVoice(audioFile, element) {
+      // Animation
+      element.classList.remove('animating');
+      void element.offsetWidth;
+      element.classList.add('animating');
+
+      // Stop previous audio
+      if (activeAudio) {
+        activeAudio.pause();
+        activeAudio.currentTime = 0;
+      }
+
+      // Play the actual recorded human audio file (.mp3)
+      activeAudio = new Audio(audioFile);
+      activeAudio.play().catch(err => {
+        console.log("Audio file not found yet. Paki-upload ang MP3 file sa folder!", err);
+        alert("Brod, i-upload mo muna ang " + audioFile + " sa GitHub folder para marinig ang totoong boses mo!");
+      });
+    }
+  </script>
+</body>
+</html>
